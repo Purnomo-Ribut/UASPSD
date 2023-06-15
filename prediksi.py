@@ -47,6 +47,8 @@ with data:
 
 
 with Prepocessing :
+    df
+    X
     df_min = X.min()
     df_max = X.max()
     #NORMALISASI NILAI X
