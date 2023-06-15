@@ -42,7 +42,7 @@ with data:
 
 with preprocessing:
 		st.write("Data yang telah di preprocessing :")
-		training_set = df.iloc[:197, 1:-1].values
+		training_set = df.iloc[:242, 1:-1].values
 		test_set = df.iloc[49:, 1:-1].values
     # Feature Scaling
 		sc = MinMaxScaler(feature_range = (0, 1))
@@ -57,7 +57,7 @@ with preprocessing:
 		X_train, y_train = np.array(X_train), np.array(y_train)
 		X_train = np.reshape(X_train, (X_train.shape[0], X_train.shape[1], 1))
 		#(740, 60, 1)
-		xtrainbaru = np.reshape(X_train, (192, 5))
+		xtrainbaru = np.reshape(X_train, (187, 5))
 		st.write(xtrainbaru)
 	
 
