@@ -47,7 +47,12 @@ with data:
 
 
 with Prepocessing :
-    df
+    def jls_extract_def():
+        
+        return 
+
+
+    df = jls_extract_def()
     X
     df_min = X.min()
     df_max = X.max()
