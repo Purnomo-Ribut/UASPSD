@@ -55,7 +55,6 @@ with modeling:
         st.subheader('Modeling')
         st.write("Pilihlah model yang akan dilakukan pengecekkan akurasi:")
         naive = st.checkbox('Gaussian Naive Bayes')
-        k_nn = st.checkbox('K-Nearest Neighboor')
         destree = st.checkbox('Decission Tree')
         mlp = st.checkbox('Multi-Layer Perceptron')
         submitted = st.form_submit_button("Submit")
@@ -75,13 +74,7 @@ with modeling:
         gaussian_akurasi = round(100 * accuracy_score(test_label, y_pred))
         # akurasi = 10
 
-        #KNN
-        K=10
-        knn=KNeighborsClassifier(n_neighbors=K)
-        knn.fit(training,training_label)
-        knn_predict=knn.predict(test)
-
-        knn_akurasi = round(100 * accuracy_score(test_label,knn_predict))
+    
 
         #Decission Tree
         dt = DecisionTreeClassifier()
@@ -101,8 +94,6 @@ with modeling:
         if submitted :
             if naive :
                 st.write('Model Naive Bayes accuracy score: {0:0.2f}'. format(gaussian_akurasi))
-            if k_nn :
-                st.write("Model KNN accuracy score : {0:0.2f}" . format(knn_akurasi))
             if destree :
                 st.write("Model Decision Tree accuracy score : {0:0.2f}" . format(dt_akurasi))
             if mlp :
@@ -117,7 +108,7 @@ with implementasi :
         Adj_Close = st.number_input('Masukkan Harga penutupan saham yang telah disesuaikan : ')
         Volume = st.number_input('Masukkan Jumlah saham yang diperdagangkan : ')
         model = st.selectbox('Pilihlah model yang akan anda gunakan untuk melakukan prediksi?',
-                ('Gaussian Naive Bayes', 'K-NN', 'Decision Tree', 'Multi-Layer Perceptron'))
+                ('Gaussian Naive Bayes', 'Decision Tree', 'Multi-Layer Perceptron'))
 
         prediksi = st.form_submit_button("Submit")
         if prediksi:
@@ -136,9 +127,7 @@ with implementasi :
             input_norm = np.array(input_norm).reshape(1, -1)
 
             if model == 'Gaussian Naive Bayes':
-                mod = gaussian
-            if model == 'K-NN':
-                mod = knn  
+                mod = gaussian 
             if model == 'Decision Tree':
                 mod = dt
             if model == 'Multi-Layer Perceptron':
