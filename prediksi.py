@@ -96,6 +96,6 @@ with modelling :
                 st.write("Model Decision Tree accuracy score : {0:0.2f}" . format(dt_akurasi))
             if mlp :
                 st.write("Model MLP accuracy score : {0:0.2f}" . format(mlp_akurasi))
-with implementasi : 
-   with st.form("my_form"):
+with implementasi :
+    st.write("Prepocessing dimulai dari : ") 
         
