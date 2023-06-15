@@ -14,10 +14,6 @@ from sklearn.model_selection import train_test_split
 # #modul library score tingkat akurasi
 from sklearn.metrics import accuracy_score
 
-def load_dataset():
-	df_max = pd.read_csv("BBNI.JK.csv")		
-	return df
-
 st.title('Prediksi Saham PT Bank Rakyat Indonesia (Persero)')
 st.write ("""
     Kelompok : 
@@ -47,12 +43,7 @@ with data:
 
 
 with Prepocessing :
-    def jls_extract_def():
-        
-        return 
-
-
-    df = jls_extract_def()
+    df
     X
     df_min = X.min()
     df_max = X.max()
