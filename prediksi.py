@@ -22,8 +22,7 @@ def load_dataset():
 	return df
 
 st.title('Prediksi Saham PT Bank Rakyat Indonesia (Persero)')
-st.write 
-("""
+st.write ("""
     Kelompok : 
     * Purnomo Ribut () 200411100156)
     * 
