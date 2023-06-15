@@ -49,6 +49,7 @@ with data:
 with Prepocessing : 
     st.write("Prepocessing dimulai dari : ")
     df = pd.read_csv("BBNI.JK.csv")
+    df
 
 with modelling :
     st.write("Prepocessing dimulai dari : ") 
