@@ -15,9 +15,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
 
 def load_dataset():
-	data = pd.read_csv("BBNI.JK.csv")	
-	df = data.replace(",",".",regex=True)
-	df = data.drop(columns=["Unnamed: 0"])
+	data = pd.read_csv("BBNI.JK.csv")		
 	return data
 
 st.title('Prediksi Saham PT Bank Rakyat Indonesia (Persero)')
