@@ -31,9 +31,9 @@ st.write ("""
     * Purnomo Ribut (200411100156)
     * Dhafa Febriyan Wiranata (200411100169)
 """)
-data, Prepocessing, modelling, implementasi = st.tabs(["Dataset","Prepocessing Data" ,"Modelling", "Implementasi"])
+Data, Prepocessing, modelling, implementasi = st.tabs(["Dataset","Prepocessing Data" ,"Modelling", "Implementasi"])
 
-with data:
+with Data:
     st.write("Tampilan Dataset Saham PT Bank Rakyat Indonesia Persero")
     data
     st.write("""
@@ -139,5 +139,47 @@ with modelling :
 		else :
 			st.write("Anda Belum Memilih Metode")
 with implementasi :
-    st.write("Prepocessing dimulai dari : ") 
-        
+	def submit3():
+      inputs = np.array([[saham3, saham2, saham1]])
+      st.write("Data Input :",inputs)
+      scaler = MinMaxScaler()
+      train = scaler.fit_transform(data_Train)
+      x = scaler.transform(inputs.reshape(-1,1))
+      st.write("Data Normalisasi",x)
+      test=x.reshape(1,3)
+      st.write(test)
+
+      # create output
+      if met1:
+         y_pred1 = model1.predict(test)
+         x=scaler.inverse_transform(y_pred1.reshape(-1,1))
+      # st.success(f"Suhu ruang diprediksi sebesar : {x[0][0]}")
+         st.title("k-nearest neighbors")
+         st.success(f"Saham Diprediksi Sebesar : {x[0][0]}")
+         
+      elif met2:
+         y_pred2 = model2.predict(test)
+         x=scaler.inverse_transform(y_pred2.reshape(-1,1))
+         st.title("Support Vector Machine")
+         st.success(f"Saham Diprediksi Sebesar : {x[0][0]}")
+
+      elif met3:
+         y_pred3 = model3.predict(test)
+         x=scaler.inverse_transform(y_pred3.reshape(-1,1))
+         st.title("Decision Tree")
+         st.success(f"Saham Diprediksi Sebesar : {x[0][0]}")
+
+      else :
+         st.write("Metode yang Anda Pilih Belum Ada, Silahkan Kembali ke Tabs Modelling Untuk memilih Metode")
+
+	st.title("Prediksi Saham PT. Bank Mandiri")
+	# saham1 = st.input("Harga Saham 1 Bulan Sebelumnya")
+	saham1 = st.number_input("Harga Saham Sebelumnya (Xt-1)",3587.5,10225.0, step=0.1)
+	saham2 = st.number_input("Harga Saham Sebelumnya (Xt-2)",3587.5,10225.0, step=0.1)
+	saham3 = st.number_input("Harga Saham Sebelumnya (Xt-3)",3587.5,10225.0, step=0.1)
+
+	# create button submit
+	submitted = st.button("Cek")
+	if submitted:
+		submit3()
+		st.balloons()
