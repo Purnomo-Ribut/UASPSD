@@ -48,106 +48,56 @@ with data:
 
 with Prepocessing : 
     st.write("Prepocessing dimulai dari : ")
-    df = pd.read_csv("BBNI.JK.csv")
-    df
-
-    X = df.drop(columns=['Volume'])
-    y = df['Volume'].values
-    df
-    X
-    df_min = X.min()
-    df_max = X.max()
-    #NORMALISASI NILAI X
-    scaler = MinMaxScaler()
-    #scaler.fit(features)
-    #scaler.transform(features)
-    scaled = scaler.fit_transform(X)
-    features_names = X.columns.copy()
-    #features_names.remove('label')
-    scaled_features = pd.DataFrame(scaled, columns=features_names)
-
-    st.subheader('Hasil Normalisasi Data')
-    st.write(scaled_features)
+    
 
 with modelling :
-    training, test = train_test_split(scaled_features,test_size=0.2, random_state=1)#Nilai X training dan Nilai X testing
-    training_label, test_label = train_test_split(y, test_size=0.2, random_state=1)#Nilai Y training dan Nilai Y testing
+    #X_norm, x_test, training_y, y_test = train_test_split(X_norm, test_size=0.2, random_state=1)
+    x_test = test.iloc[:, :6]
+    y_test = test.iloc[:, 6:]
+    y_test.set_axis(["y_test"], axis="columns")
+
     with st.form("modeling"):
         st.subheader('Modeling')
         st.write("Pilihlah model yang akan dilakukan pengecekkan akurasi:")
         naive = st.checkbox('Gaussian Naive Bayes')
-        k_nn = st.checkbox('K-Nearest Neighboor')
-        destree = st.checkbox('Decission Tree')
+        k_nn = st.checkbox('K-Nearest Neighbors')
+        destree = st.checkbox('Decision Tree')
         submitted = st.form_submit_button("Submit")
 
-        # NB
-        GaussianNB(priors=None)
+        if naive:
+            model_n = GaussianNB()
+            model_n.fit(X_norm, training_y)
+            y_pred3=model_n.predict(x_test)
+            #gaussian_accuracy = round(100 * accuracy_score(y_test, y_pred3), 2)
+            from sklearn.metrics import mean_absolute_percentage_error
+            mape = mean_absolute_percentage_error(y_test, y_pred3)
+            #st.write('Model Gaussian Naive Bayes accuracy score:', gaussian_accuracy)
+            st.write('MAPE Model Gaussian Naive Bayes:', mape)
 
-        # Fitting Naive Bayes Classification to the Training set with linear kernel
-        gaussian = GaussianNB()
-        gaussian = gaussian.fit(training, training_label)
+        if k_nn:
+            # import knn
+            from sklearn.neighbors import KNeighborsRegressor
+            model_knn = KNeighborsRegressor(n_neighbors=30)
+            model_knn.fit(X_norm, training_y)
+            y_pred2=model_knn.predict(x_test)
+            # knn_accuracy = round(100 * accuracy_score(y_test, y_pred2), 2)    
+            from sklearn.metrics import mean_absolute_percentage_error
+            mape = mean_absolute_percentage_error(y_test, y_pred2)
+            # st.write("Model K-Nearest Neighbors accuracy score:", knn_accuracy )
+            st.write('MAPE Model K-Nearest Neighbors :', mape)
 
-        # Predicting the Test set results
-        y_pred = gaussian.predict(test)
-    
-        y_compare = np.vstack((test_label,y_pred)).T
-        gaussian.predict_proba(test)
-        gaussian_akurasi = round(100 * accuracy_score(test_label, y_pred))
-        # akurasi = 10
+        if destree:
+            #klasifikasi menggunakan decision tree
+            model_tree = tree.DecisionTreeClassifier(random_state=3, max_depth=1)
+            model_tree.fit(X_norm, training_y)
+            y_pred1=model_tree.predict(x_test)
+            #dt_accuracy = round(100 * accuracy_score(y_test, y_pred1), 2)
+            from sklearn.metrics import mean_absolute_percentage_error 
+            mape = mean_absolute_percentage_error(y_test, y_pred1) 
+            #st.write("Model Decision Tree accuracy score:", dt_accuracy)
+            st.write('MAPE Model Decision Tree:', mape)
 
-        #Gaussian Naive Bayes
-        # gaussian = GaussianNB()
-        # gaussian = gaussian.fit(training, training_label)
-
-        # probas = gaussian.predict_proba(test)
-        # probas = probas[:,1]
-        # probas = probas.round()
-
-        # gaussian_akurasi = round(100 * accuracy_score(test_label,probas))
-
-        #KNN
-        K=10
-        knn=KNeighborsClassifier(n_neighbors=K)
-        knn.fit(training,training_label)
-        knn_predict=knn.predict(test)
-
-        knn_akurasi = round(100 * accuracy_score(test_label,knn_predict))
-
-        #Decission Tree
-        dt = DecisionTreeClassifier()
-        dt.fit(training, training_label)
-        # prediction
-        dt_pred = dt.predict(test)
-        #Accuracy
-        dt_akurasi = round(100 * accuracy_score(test_label,dt_pred))
-
-        if submitted :
-            if naive :
-                st.write('Model Naive Bayes accuracy score: {0:0.2f}'. format(gaussian_akurasi))
-            if k_nn :
-                st.write("Model KNN accuracy score : {0:0.2f}" . format(knn_akurasi))
-            if destree :
-                st.write("Model Decision Tree accuracy score : {0:0.2f}" . format(dt_akurasi))
         
-        grafik = st.form_submit_button("Grafik akurasi semua model")
-        if grafik:
-            data = pd.DataFrame({
-                'Akurasi' : [gaussian_akurasi, knn_akurasi, dt_akurasi],
-                'Model' : ['Gaussian Naive Bayes', 'K-NN', 'Decission Tree'],
-            })
-
-            chart = (
-                alt.Chart(data)
-                .mark_bar()
-                .encode(
-                    alt.X("Akurasi"),
-                    alt.Y("Model"),
-                    alt.Color("Akurasi"),
-                    alt.Tooltip(["Akurasi", "Model"]),
-                )
-                .interactive()
-            )
-            st.altair_chart(chart,use_container_width=True)
 with implementasi :
     st.write("Prepocessing dimulai dari : ") 
         
