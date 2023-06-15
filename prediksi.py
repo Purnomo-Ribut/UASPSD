@@ -24,7 +24,7 @@ def load_dataset():
 st.title('Prediksi Saham PT Bank Rakyat Indonesia (Persero)')
 st.write ("""
     Kelompok : 
-    * Purnomo Ribut () 200411100156)
-    * 
+    * Purnomo Ribut (200411100156)
+    * Dhafa Febriyan Wiranata (200411100169)
 """)
 dataset, modelling, implementasi = st.tabs(["Dataset", "Modelling", "Implementasi"])
