@@ -42,60 +42,16 @@ with data:
     * Volume: Jumlah saham yang diperdagangkan pada hari perdagangan.
 
 
-Dataset ini dapat digunakan untuk menganalisis pergerakan harga saham PT Bank Rakyat Indonesia serta volume perdagangan yang terjadi dalam rentang waktu tertentu. Dengan menggunakan informasi ini, dapat dilakukan berbagai analisis seperti peramalan harga saham, identifikasi tren pasar, dan pengambilan keputusan investasi.""")
+    Dataset ini dapat digunakan untuk menganalisis pergerakan harga saham PT Bank Rakyat Indonesia serta volume perdagangan yang terjadi dalam rentang waktu tertentu. Dengan menggunakan informasi ini, dapat dilakukan berbagai analisis seperti peramalan harga saham, identifikasi tren pasar, dan pengambilan keputusan investasi.""")
 
 
 
 with Prepocessing : 
     st.write("Prepocessing dimulai dari : ")
+    df = pd.read_csv("BBNI.JK.csv")
+
 with modelling :
-    training, test = train_test_split(scaled_features,test_size=0.2, random_state=1)#Nilai X training dan Nilai X testing
-    training_label, test_label = train_test_split(y, test_size=0.2, random_state=1)#Nilai Y training dan Nilai Y testing
-    with st.form("modeling"):
-        st.subheader('Modeling')
-        st.write("Pilihlah model yang akan dilakukan pengecekkan akurasi:")
-        naive = st.checkbox('Gaussian Naive Bayes')
-        destree = st.checkbox('Decission Tree')
-        mlp = st.checkbox('Multi-Layer Perceptron')
-        submitted = st.form_submit_button("Submit")
-
-        # NB
-        GaussianNB(priors=None)
-
-        # Fitting Naive Bayes Classification to the Training set with linear kernel
-        gaussian = GaussianNB()
-        gaussian = gaussian.fit(training, training_label)
-
-        # Predicting the Test set results
-        y_pred = gaussian.predict(test)
-    
-        y_compare = np.vstack((test_label,y_pred)).T
-        gaussian.predict_proba(test)
-        gaussian_akurasi = round(100 * accuracy_score(test_label, y_pred))
-        # akurasi = 10
-
-        #Decission Tree
-        dt = DecisionTreeClassifier()
-        dt.fit(training, training_label)
-        # prediction
-        dt_pred = dt.predict(test)
-        #Accuracy
-        dt_akurasi = round(100 * accuracy_score(test_label,dt_pred))
-
-        # MLP
-        mlp = MLPClassifier(hidden_layer_sizes=(100, 100), max_iter=1000)
-        mlp.fit(training, training_label)
-        mlp_predict = mlp.predict(test)
-
-        mlp_akurasi = round(100 * accuracy_score(test_label, mlp_predict))
-
-        if submitted :
-            if naive :
-                st.write('Model Naive Bayes accuracy score: {0:0.2f}'. format(gaussian_akurasi))
-            if destree :
-                st.write("Model Decision Tree accuracy score : {0:0.2f}" . format(dt_akurasi))
-            if mlp :
-                st.write("Model MLP accuracy score : {0:0.2f}" . format(mlp_akurasi))
+    st.write("Prepocessing dimulai dari : ") 
 with implementasi :
     st.write("Prepocessing dimulai dari : ") 
         
