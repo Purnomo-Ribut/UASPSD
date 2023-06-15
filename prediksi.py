@@ -15,7 +15,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
 
 def load_dataset():
-	data = pd.read_csv("/home/ubuntu/workspace/BBNI.JK.csv")	
+	data = pd.read_csv("BBNI.JK.csv")	
 	df = data.replace(",",".",regex=True)
 	df = data.drop(columns=["Unnamed: 0"])
 	return data
