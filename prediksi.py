@@ -71,6 +71,7 @@ with Prepocessing :
     # Menghitung jumlah total data dalam dataset
     # dan menyimpannya dalam variabel n
 
+
     sizeTrain = (round(n*0.8))
     # Menghitung jumlah data yang akan digunakan untuk data latih
     # dengan mengalikan 0.8 (80%) dengan total jumlah data
@@ -78,6 +79,8 @@ with Prepocessing :
     # dan menyimpan hasilnya dalam variabel sizeTrain
 
     data_train = pd.DataFrame(df[:sizeTrain])
+    train_array = data_train.values  # Mengonversi DataFrame menjadi numpy array
+    train_scaled = scaler.fit_transform(train_array)  # Melakukan normalisasi pada numpy array
     # Membuat DataFrame baru untuk data latih
     # dengan menggunakan slicing untuk mengambil data dari indeks 0 sampai sizeTrain
     # dan menyimpannya dalam variabel data_train
@@ -87,11 +90,13 @@ with Prepocessing :
     # dengan menggunakan slicing untuk mengambil data mulai dari indeks sizeTrain hingga akhir
     # dan menyimpannya dalam variabel data_test
 
-    # dates_test = pd.DataFrame(dates[sizeTrain:])
+    #dates_test = pd.DataFrame(dates[sizeTrain:])
     # Komentar ini memberikan penjelasan bahwa ada variabel dates yang tidak digunakan di sini
 
     data_train
     # Menampilkan DataFrame data_train
+
+
     st.write("Normalisasi data menggunakan MinMaxScaler")
     # Normalisasi data menggunakan MinMaxScaler
     from sklearn.preprocessing import MinMaxScaler
@@ -126,7 +131,7 @@ with Prepocessing :
 
     test = test['df']
     # Mengambil kolom 'data' dari DataFrame test dan menyimpannya kembali dalam variabel test
-    
+
     test
     # Menampilkan DataFrame test
 
