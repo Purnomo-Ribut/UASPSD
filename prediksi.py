@@ -172,14 +172,8 @@ with implementasi :
 		else :
 			st.write("Metode yang Anda Pilih Belum Ada, Silahkan Kembali ke Tabs Modelling Untuk memilih Metode")
 
-	st.title("Prediksi Saham PT. Bank Mandiri")
+	st.title("Prediksi Saham PT. Bank Rakyat Indonesia (Persero)")
 	# saham1 = st.input("Harga Saham 1 Bulan Sebelumnya")
 	saham1 = st.number_input("Harga Saham Sebelumnya (Xt-1)",3587.5,10225.0, step=0.1)
 	saham2 = st.number_input("Harga Saham Sebelumnya (Xt-2)",3587.5,10225.0, step=0.1)
 	saham3 = st.number_input("Harga Saham Sebelumnya (Xt-3)",3587.5,10225.0, step=0.1)
-
-	# create button submit
-	submitted = st.button("Cek")
-	if submitted:
-		submit3()
-		st.balloons()
