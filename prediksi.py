@@ -30,7 +30,16 @@ st.write ("""
 data, Prepocessing, modelling, implementasi = st.tabs(["Dataset","Prepocessing Data" ,"Modelling", "Implementasi"])
 
 with data:
-    st.write("Data ini didapatkan dari")
+    st.write("""Dataset Saham PT Bank Rakyat Indonesia Persero yang diambil dari finance.yahoo.com berisi informasi harga saham pada setiap tanggal perdagangan. Berikut adalah deskripsi dari setiap kolom dalam dataset 
+    *  Date: Tanggal perdagangan saham.
+    * Open: Harga pembukaan (opening price) saham pada hari perdagangan.
+    * High: Harga tertinggi (highest price) yang dicapai oleh saham pada hari perdagangan.
+    * Low: Harga terendah (lowest price) yang dicapai oleh saham pada hari perdagangan.
+    * Close: Harga penutupan (closing price) saham pada hari perdagangan.
+    * Adj Close: Harga penutupan saham yang telah disesuaikan (adjusted closing price) dengan faktor-faktor seperti pembagian saham, dividen, dan aksi korporasi lainnya.
+    * Volume: Jumlah saham yang diperdagangkan pada hari perdagangan.
+
+Dataset ini dapat digunakan untuk menganalisis pergerakan harga saham PT Bank Rakyat Indonesia serta volume perdagangan yang terjadi dalam rentang waktu tertentu. Dengan menggunakan informasi ini, dapat dilakukan berbagai analisis seperti peramalan harga saham, identifikasi tren pasar, dan pengambilan keputusan investasi.""")
 
 with Prepocessing : 
     st.write("Prepocessing dimulai dari : ")
