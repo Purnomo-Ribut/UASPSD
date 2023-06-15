@@ -48,7 +48,68 @@ with data:
 
 with Prepocessing : 
     st.write("Prepocessing dimulai dari : ")
+    # memebersihkan data yang 0
+    def clean(data):
+        vol = data["Volume"].values
+        clean = []
+        for i in range (len(vol)):
+            if vol[i]==0:
+                data = data.drop([i])
+        
+        return data
+    # split a univariate sequence into samples
+    def split_sequence(sequence, n_steps):
+        X, y = list(), list()
+        for i in range(len(sequence)):
+            end_ix = i + n_steps
+            if end_ix > len(sequence)-1:
+                break
+            # gather input and output parts of the pattern
+            seq_x, seq_y = sequence[i:end_ix], sequence[end_ix]
+            X.append(seq_x)
+            y.append(seq_y)
+        return array(X), array(y)
     
+     # split a univariate sequence into samples
+    def split_sequence(sequence, n_steps):
+        X, y = list(), list()
+        for i in range(len(sequence)):
+            end_ix = i + n_steps
+            if end_ix > len(sequence)-1:
+                break
+            # gather input and output parts of the pattern
+            seq_x, seq_y = sequence[i:end_ix], sequence[end_ix]
+            X.append(seq_x)
+            y.append(seq_y)
+        return array(X), array(y)
+    
+    inp_param = 6
+    data_clean = clean(data)
+    volume = data_clean['Volume'].values
+    X, y = split_sequence(volume, inp_param)
+
+    # column names to X and y data frames
+    df_X = pd.DataFrame(X, columns=['input-'+str(i+1) for i in range(inp_param-1, -1,-1)])
+    df_y = pd.DataFrame(y, columns=['output'])
+
+    # concat df_X and df_y
+    df = pd.concat([df_X, df_y], axis=1)
+
+    st.write(df)
+
+    # Split data
+    training = pd.DataFrame(df.iloc[:359, :].values)
+    test = pd.DataFrame(df.iloc[359:, :].values)
+
+    scaler= MinMaxScaler()
+    training_x = training.iloc[:, 0:6]
+    training_y = training.iloc[:, 6:]
+
+    X_norm= scaler.fit_transform(training_x)
+    st.write(X_norm)
+    # y_norm= scaler.fit_transform(df_y)
+
+    X_norm= scaler.fit_transform(training_x)
 
 with modelling :
     #X_norm, x_test, training_y, y_test = train_test_split(X_norm, test_size=0.2, random_state=1)
