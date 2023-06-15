@@ -37,4 +37,4 @@ with Prepocessing :
 with modelling : 
     st.write("Modelling terdapat 3 : ")
 with implementasi : 
-    st.title("Prediksi Saham Terkini dengan memasukkkan input ft ")
+    st.write("Prediksi Saham Terkini dengan memasukkkan input ft ")
