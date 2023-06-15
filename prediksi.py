@@ -35,7 +35,7 @@ data, Prepocessing, modelling, implementasi = st.tabs(["Dataset","Prepocessing D
 
 with data:
     st.write("Tampilan Dataset Saham PT Bank Rakyat Indonesia Persero")
-    st.dataframe(load_dataset())
+    data
     st.write("""
     Dataset Saham PT Bank Rakyat Indonesia Persero yang diambil dari finance.yahoo.com berisi informasi harga saham pada setiap tanggal perdagangan. 
     Berikut adalah deskripsi dari setiap kolom dalam dataset 
@@ -67,56 +67,77 @@ with Prepocessing :
 
 
 with modelling :
-    training, test = train_test_split(scaled_features,test_size=0.2, random_state=1)#Nilai X training dan Nilai X testing
-    training_label, test_label = train_test_split(y, test_size=0.2, random_state=1)#Nilai Y training dan Nilai Y testing
-    with st.form("modeling"):
-        st.subheader('Modeling')
-        st.write("Pilihlah model yang akan dilakukan pengecekkan akurasi:")
-        naive = st.checkbox('Gaussian Naive Bayes')
-        k_nn = st.checkbox('K-Nearest Neighboor')
-        destree = st.checkbox('Decission Tree')
-        submitted = st.form_submit_button("Submit")
+	t.title("Modelling")
+	model1 = pickle.load(open('model_knn.sav', 'rb'))
+	model2 = pickle.load(open('model_svm.sav', 'rb'))
+	model3 = pickle.load(open('model_dt.sav', 'rb'))
+   
+	# split a univariate sequence into samples
+	def split_sequence(sequence, n_steps):
+		X, y = list(), list()
+		for i in range(len(sequence)):
+			# find the end of this pattern
+			end_ix = i + n_steps
+			# check if we are beyond the sequence
+			if end_ix > len(sequence)-1:
+				break
+			# gather input and output parts of the pattern
+			seq_x, seq_y = sequence[i:end_ix], sequence[end_ix]
+			X.append(seq_x)
+			y.append(seq_y)
+		return array(X), array(y)
+	
+	# transform to a supervised learning problem
+	X1, y1 = split_sequence(hasil_train['Close'], 3)
+	X2, y2 = split_sequence(hasil_test['Close'], 3)
+	dfX1 = pd.DataFrame(X1, columns=["Xt-3","Xt-2", "Xt-1"])
+	dfy1 = pd.DataFrame(y1, columns=["Xt"])
+	dfX2 = pd.DataFrame(X2, columns=["Xt-3","Xt-2", "Xt-1"])
+	dfy2 = pd.DataFrame(y2, columns=["Xt"])
 
-        # NB
-        GaussianNB(priors=None)
+	df_train = pd.concat((dfX1, dfy1), axis = 1)
+	df_test = pd.concat((dfX2, dfy2), axis = 1)
 
-        # Fitting Naive Bayes Classification to the Training set with linear kernel
-        gaussian = GaussianNB()
-        gaussian = gaussian.fit(training, training_label)
+	# ambil data
+	X_test = df_test.drop(columns="Xt")
+	y_test = df_test.Xt
+	# X_test
 
-        # Predicting the Test set results
-        y_pred = gaussian.predict(test)
-    
-        y_compare = np.vstack((test_label,y_pred)).T
-        gaussian.predict_proba(test)
-        gaussian_akurasi = round(100 * accuracy_score(test_label, y_pred))
-        # akurasi = 10
-        #KNN
-        K=10
-        knn=KNeighborsClassifier(n_neighbors=K)
-        knn.fit(training,training_label)
-        knn_predict=knn.predict(test)
+	st.write ("Pilih metode yang ingin anda gunakan :")
+	met1 = st.checkbox("KNN")
+	met2 = st.checkbox("SVM")
+	met3 = st.checkbox("Decision Tree")
+	submit2 = st.button("Pilih")
 
-        knn_akurasi = round(100 * accuracy_score(test_label,knn_predict))
+	if submit2:      
+		if met1 :
+			st.subheader("Akurasi")
+			y_pred = model1.predict(X_test)
+			y_actual = scaler.inverse_transform(np.array(y_test).reshape(-1, 1))
+			y_prediksi = scaler.inverse_transform(y_pred.reshape(-1, 1))
+			mape=mean_absolute_percentage_error(y_prediksi, y_actual)
+			st.write("Nilai MAPE Menggunakan KNN sebesar : ", (mape))
+			st.write("Metode yang Anda gunakan Adalah KNN")
 
-        #Decission Tree
-        dt = DecisionTreeClassifier()
-        dt.fit(training, training_label)
-        # prediction
-        dt_pred = dt.predict(test)
-        #Accuracy
-        dt_akurasi = round(100 * accuracy_score(test_label,dt_pred))
+		elif met2:
+			st.subheader("Akurasi")
+			y_pred = model2.predict(X_test)
+			y_actual = scaler.inverse_transform(np.array(y_test).reshape(-1, 1))
+			y_prediksi = scaler.inverse_transform(y_pred.reshape(-1, 1))
+			mape=mean_absolute_percentage_error(y_prediksi, y_actual)
+			st.write("Nilai MAPE Menggunakan SVM sebesar : ", (mape))
+			st.write("Metode yang Anda gunakan Adalah SVM")
 
-        if submitted :
-            if naive :
-                st.write('Model Naive Bayes accuracy score: {0:0.2f}'. format(gaussian_akurasi))
-            if k_nn :
-                st.write("Model KNN accuracy score : {0:0.2f}" . format(knn_akurasi))
-            if destree :
-                st.write("Model Decision Tree accuracy score : {0:0.2f}" . format(dt_akurasi))
-        
-        grafik = st.form_submit_button("Grafik akurasi semua model")
-        
+		elif met3 :
+			st.subheader("Akurasi")
+			y_pred = model3.predict(X_test)
+			y_actual = scaler.inverse_transform(np.array(y_test).reshape(-1, 1))
+			y_prediksi = scaler.inverse_transform(y_pred.reshape(-1, 1))
+			mape=mean_absolute_percentage_error(y_prediksi, y_actual)
+			st.write("Nilai MAPE Menggunakan Decision Tree sebesar : ", (mape))
+			st.write("Metode yang Anda gunakan Adalah Decision Tree")
+		else :
+			st.write("Anda Belum Memilih Metode")
 with implementasi :
     st.write("Prepocessing dimulai dari : ") 
         
