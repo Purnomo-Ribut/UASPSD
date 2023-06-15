@@ -27,7 +27,7 @@ st.write ("""
     * Purnomo Ribut (200411100156)
     * Dhafa Febriyan Wiranata (200411100169)
 """)
-Data, Prepocessing, modelling, implementasi = st.tabs(["Dataset","Prepocessing Data" ,"Modelling", "Implementasi"])
+data, Prepocessing, modelling, implementasi = st.tabs(["Dataset","Prepocessing Data" ,"Modelling", "Implementasi"])
 
 with data:
     st.write("Data ini didapatkan dari")
