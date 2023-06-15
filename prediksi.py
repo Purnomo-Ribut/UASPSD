@@ -33,6 +33,7 @@ with data:
     st.write("""
     Dataset Saham PT Bank Rakyat Indonesia Persero yang diambil dari finance.yahoo.com berisi informasi harga saham pada setiap tanggal perdagangan. 
     Berikut adalah deskripsi dari setiap kolom dalam dataset 
+    
     * Date: Tanggal perdagangan saham.
     * Open: Harga pembukaan (opening price) saham pada hari perdagangan.
     * High: Harga tertinggi (highest price) yang dicapai oleh saham pada hari perdagangan.
