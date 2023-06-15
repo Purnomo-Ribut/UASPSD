@@ -15,11 +15,10 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
 
 def load_dataset():
-	url = 'https://github.com/Purnomo-Ribut/UASPSD/blob/72ab2198224d48f894e43f83f862b3e55fab4856/BBNI.JK.csv'
-	df = pd.read_csv(url,  header='infer', index_col=False)
-	df = df.replace(",",".",regex=True)
-	df = df.drop(columns=["Unnamed: 0"])
-	return df
+	data = pd.read_csv("/home/ubuntu/workspace/BBNI.JK.csv")	
+	df = data.replace(",",".",regex=True)
+	df = data.drop(columns=["Unnamed: 0"])
+	return data
 
 st.title('Prediksi Saham PT Bank Rakyat Indonesia (Persero)')
 st.write ("""
