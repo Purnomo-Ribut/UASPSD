@@ -1,18 +1,29 @@
-#Modul Library
 import streamlit as st
-import numpy as np
 import pandas as pd
+import numpy as np
+from numpy import array
+import pickle
+from sklearn.preprocessing import MinMaxScaler
+from sklearn.metrics import mean_absolute_percentage_error
 
-#Modul library Metode 
-from sklearn.naive_bayes import GaussianNB
-from sklearn.neighbors import KNeighborsClassifier
-from sklearn.tree import DecisionTreeClassifier
+data=pd.read_csv('BBNI.JK.csv')
+databersih=data.dropna()
 
-# #modul library data testing dan training
-from sklearn.model_selection import train_test_split
+temp=databersih["Close"]
+n=len(temp)
+sizeTrain=(round(n*0.8))
+data_Train=pd.DataFrame(temp[:sizeTrain])
+data_Test=pd.DataFrame(temp[sizeTrain:])
 
-# #modul library score tingkat akurasi
-from sklearn.metrics import accuracy_score
+#mengambil nama kolom
+judul = data_Test.columns.copy() 
+
+#menghitung hasil normalisasi + menampilkan
+scaler = MinMaxScaler()
+train = scaler.fit_transform(data_Train)
+test = scaler.fit_transform(data_Test)
+hasil_train = pd.DataFrame(train,columns=judul)
+hasil_test = pd.DataFrame(test,columns=judul)
 
 st.title('Prediksi Saham PT Bank Rakyat Indonesia (Persero)')
 st.write ("""
@@ -43,21 +54,16 @@ with data:
 
 
 with Prepocessing :
-    df
-    X
-    df_min = X.min()
-    df_max = X.max()
-    #NORMALISASI NILAI X
-    scaler = MinMaxScaler()
-    #scaler.fit(features)
-    #scaler.transform(features)
-    scaled = scaler.fit_transform(X)
-    features_names = X.columns.copy()
-    #features_names.remove('label')
-    scaled_features = pd.DataFrame(scaled, columns=features_names)
-
-    st.subheader('Hasil Normalisasi Data')
-    st.write(scaled_features)
+	st.title("Preprocessing")
+	pilih = st.radio(
+		"Apa Yang Ingin Anda Lakukan",
+		('Min Max Scaler',))
+	# met1 = st.checkbox("Min Max Scaler")
+	if pilih == 'Min Max Scaler' :
+		st.subheader("Hasil Normalisasi Data Train")
+		st.dataframe(hasil_train)
+		st.subheader("Hasil Normalisasi Data Test")
+		st.dataframe(hasil_test)
 
 
 with modelling :
