@@ -48,7 +48,7 @@ Dataset ini dapat digunakan untuk menganalisis pergerakan harga saham PT Bank Ra
 
 with Prepocessing : 
     st.write("Prepocessing dimulai dari : ")
-with modeling:
+with modeling :
     training, test = train_test_split(scaled_features,test_size=0.2, random_state=1)#Nilai X training dan Nilai X testing
     training_label, test_label = train_test_split(y, test_size=0.2, random_state=1)#Nilai Y training dan Nilai Y testing
     with st.form("modeling"):
@@ -73,8 +73,6 @@ with modeling:
         gaussian.predict_proba(test)
         gaussian_akurasi = round(100 * accuracy_score(test_label, y_pred))
         # akurasi = 10
-
-    
 
         #Decission Tree
         dt = DecisionTreeClassifier()
