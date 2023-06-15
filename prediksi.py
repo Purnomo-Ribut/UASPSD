@@ -98,41 +98,4 @@ with modelling :
                 st.write("Model MLP accuracy score : {0:0.2f}" . format(mlp_akurasi))
 with implementasi : 
    with st.form("my_form"):
-        st.subheader("Implementasi")
-        Open = st.number_input('Masukkan Harga pembukaan : ')
-        High = st.number_input('Masukkan Harga tertinggi : ')
-        Low = st.number_input('Masukkan Harga terendah : ')
-        Close = st.number_input('Masukkan Harga penutupan : ')
-        Adj_Close = st.number_input('Masukkan Harga penutupan saham yang telah disesuaikan : ')
-        Volume = st.number_input('Masukkan Jumlah saham yang diperdagangkan : ')
-        model = st.selectbox('Pilihlah model yang akan anda gunakan untuk melakukan prediksi?',
-                ('Gaussian Naive Bayes', 'Decision Tree', 'Multi-Layer Perceptron'))
-
-        prediksi = st.form_submit_button("Submit")
-        if prediksi:
-            inputs = np.array([
-                Open,
-                High,
-                Low,
-                Close,
-                Adj_Close,
-                Volume,
-            ])
-
-            df_min = X.min()
-            df_max = X.max()
-            input_norm = ((inputs - df_min) / (df_max - df_min))
-            input_norm = np.array(input_norm).reshape(1, -1)
-
-            if model == 'Gaussian Naive Bayes':
-                mod = gaussian 
-            if model == 'Decision Tree':
-                mod = dt
-            if model == 'Multi-Layer Perceptron':
-                mod = mlp
-
-            input_pred = mod.predict(input_norm)
-
-
-            st.subheader('Hasil Prediksi')
-            st.write('Menggunakan Pemodelan :', model)
+        
