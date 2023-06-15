@@ -92,6 +92,43 @@ with Prepocessing :
 
     data_train
     # Menampilkan DataFrame data_train
+    st.write("Normalisasi data menggunakan MinMaxScaler")
+    # Normalisasi data menggunakan MinMaxScaler
+    from sklearn.preprocessing import MinMaxScaler
+    scaler = MinMaxScaler()
+    # Mengimport MinMaxScaler dari library sklearn.preprocessing
+    # dan membuat objek scaler dari kelas tersebu
+
+    train_scaled = scaler.fit_transform(data_train)
+    # Menggunakan scaler.fit_transform untuk melakukan normalisasi data pada data latih (data_train)
+    # Normalisasi dilakukan agar nilai-nilai data berada dalam rentang [0, 1]
+    # Menghasilkan array yang berisi data latih yang telah dinormalisasi dan disimpan dalam variabel train_scaled
+
+    test_scaled = scaler.transform(data_test)
+    # Menggunakan scaler.transform untuk menerapkan normalisasi yang sama pada data uji (data_test)
+    # Menggunakan transform() karena kita ingin menggunakan parameter yang telah dihitung
+    # pada proses normalisasi data latih (data_train)
+    # Menghasilkan array yang berisi data uji yang telah dinormalisasi dan disimpan dalam variabel test_scaled
+
+    # reshaped_data = data.reshape(-1, 1)
+    # Komentar ini memberikan penjelasan bahwa ada variabel reshaped_data yang tidak digunakan di sini
+
+    train = pd.DataFrame(train_scaled, columns = ['df'])
+    # Membuat DataFrame baru untuk data latih yang telah dinormalisasi (train_scaled)
+    # dengan kolom bernama 'data'
+
+    train = train['df']
+    # Mengambil kolom 'data' dari DataFrame train dan menyimpannya kembali dalam variabel train
+
+    test = pd.DataFrame(test_scaled, columns = ['df'])
+    # Membuat DataFrame baru untuk data uji yang telah dinormalisasi (test_scaled)
+    # dengan kolom bernama 'data'
+
+    test = test['df']
+    # Mengambil kolom 'data' dari DataFrame test dan menyimpannya kembali dalam variabel test
+    
+    test
+    # Menampilkan DataFrame test
 
 
 with modelling :
