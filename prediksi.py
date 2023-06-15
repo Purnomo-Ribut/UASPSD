@@ -51,93 +51,103 @@ with Prepocessing :
     df = pd.read_csv("BBNI.JK.csv")
     df
 
-    def split_sequence(sequence, n_steps):
-    # Inisialisasi list kosong untuk menyimpan input (X) dan output (y)
-        X, y = list(), list()
-        for i in range(len(sequence)):
-            # Menemukan akhir pola ini berdasarkan jumlah langkah (n_steps)
-            end_ix = i + n_steps
-            # Memeriksa apakah kita sudah melebihi urutan
-            if end_ix > len(sequence)-1:
-                break
-            # Mengumpulkan bagian input dan output dari pola
-            seq_x, seq_y = sequence[i:end_ix], sequence[end_ix]
-            X.append(seq_x)
-            y.append(seq_y)
-
-    # Mengembalikan X dan y dalam bentuk array NumPy
-        return array(X), array(y)
-    n = len(df)
-    # Menghitung jumlah total data dalam dataset
-    # dan menyimpannya dalam variabel n
-
-
-    sizeTrain = (round(n*0.8))
-    # Menghitung jumlah data yang akan digunakan untuk data latih
-    # dengan mengalikan 0.8 (80%) dengan total jumlah data
-    # dan membulatkannya ke bilangan terdekat menggunakan fungsi round()
-    # dan menyimpan hasilnya dalam variabel sizeTrain
-
-    data_train = pd.DataFrame(df[:sizeTrain])
-    train_array = data_train.values  # Mengonversi DataFrame menjadi numpy array
-    train_scaled = scaler.fit_transform(train_array)  # Melakukan normalisasi pada numpy array
-    # Membuat DataFrame baru untuk data latih
-    # dengan menggunakan slicing untuk mengambil data dari indeks 0 sampai sizeTrain
-    # dan menyimpannya dalam variabel data_train
-
-    data_test = pd.DataFrame(df[sizeTrain:])
-    # Membuat DataFrame baru untuk data uji
-    # dengan menggunakan slicing untuk mengambil data mulai dari indeks sizeTrain hingga akhir
-    # dan menyimpannya dalam variabel data_test
-
-    #dates_test = pd.DataFrame(dates[sizeTrain:])
-    # Komentar ini memberikan penjelasan bahwa ada variabel dates yang tidak digunakan di sini
-
-    data_train
-    # Menampilkan DataFrame data_train
-
-
-    st.write("Normalisasi data menggunakan MinMaxScaler")
-    # Normalisasi data menggunakan MinMaxScaler
-    from sklearn.preprocessing import MinMaxScaler
+    X = df.drop(columns=['Volume'])
+    y = df['Volume'].values
+    df
+    X
+    df_min = X.min()
+    df_max = X.max()
+    #NORMALISASI NILAI X
     scaler = MinMaxScaler()
-    # Mengimport MinMaxScaler dari library sklearn.preprocessing
-    # dan membuat objek scaler dari kelas tersebu
+    #scaler.fit(features)
+    #scaler.transform(features)
+    scaled = scaler.fit_transform(X)
+    features_names = X.columns.copy()
+    #features_names.remove('label')
+    scaled_features = pd.DataFrame(scaled, columns=features_names)
 
-    train_scaled = scaler.fit_transform(data_train)
-    # Menggunakan scaler.fit_transform untuk melakukan normalisasi data pada data latih (data_train)
-    # Normalisasi dilakukan agar nilai-nilai data berada dalam rentang [0, 1]
-    # Menghasilkan array yang berisi data latih yang telah dinormalisasi dan disimpan dalam variabel train_scaled
-
-    test_scaled = scaler.transform(data_test)
-    # Menggunakan scaler.transform untuk menerapkan normalisasi yang sama pada data uji (data_test)
-    # Menggunakan transform() karena kita ingin menggunakan parameter yang telah dihitung
-    # pada proses normalisasi data latih (data_train)
-    # Menghasilkan array yang berisi data uji yang telah dinormalisasi dan disimpan dalam variabel test_scaled
-
-    # reshaped_data = data.reshape(-1, 1)
-    # Komentar ini memberikan penjelasan bahwa ada variabel reshaped_data yang tidak digunakan di sini
-
-    train = pd.DataFrame(train_scaled, columns = ['df'])
-    # Membuat DataFrame baru untuk data latih yang telah dinormalisasi (train_scaled)
-    # dengan kolom bernama 'data'
-
-    train = train['df']
-    # Mengambil kolom 'data' dari DataFrame train dan menyimpannya kembali dalam variabel train
-
-    test = pd.DataFrame(test_scaled, columns = ['df'])
-    # Membuat DataFrame baru untuk data uji yang telah dinormalisasi (test_scaled)
-    # dengan kolom bernama 'data'
-
-    test = test['df']
-    # Mengambil kolom 'data' dari DataFrame test dan menyimpannya kembali dalam variabel test
-
-    test
-    # Menampilkan DataFrame test
-
+    st.subheader('Hasil Normalisasi Data')
+    st.write(scaled_features)
 
 with modelling :
-    st.write("Prepocessing dimulai dari : ") 
+    training, test = train_test_split(scaled_features,test_size=0.2, random_state=1)#Nilai X training dan Nilai X testing
+    training_label, test_label = train_test_split(y, test_size=0.2, random_state=1)#Nilai Y training dan Nilai Y testing
+    with st.form("modeling"):
+        st.subheader('Modeling')
+        st.write("Pilihlah model yang akan dilakukan pengecekkan akurasi:")
+        naive = st.checkbox('Gaussian Naive Bayes')
+        k_nn = st.checkbox('K-Nearest Neighboor')
+        destree = st.checkbox('Decission Tree')
+        submitted = st.form_submit_button("Submit")
+
+        # NB
+        GaussianNB(priors=None)
+
+        # Fitting Naive Bayes Classification to the Training set with linear kernel
+        gaussian = GaussianNB()
+        gaussian = gaussian.fit(training, training_label)
+
+        # Predicting the Test set results
+        y_pred = gaussian.predict(test)
+    
+        y_compare = np.vstack((test_label,y_pred)).T
+        gaussian.predict_proba(test)
+        gaussian_akurasi = round(100 * accuracy_score(test_label, y_pred))
+        # akurasi = 10
+
+        #Gaussian Naive Bayes
+        # gaussian = GaussianNB()
+        # gaussian = gaussian.fit(training, training_label)
+
+        # probas = gaussian.predict_proba(test)
+        # probas = probas[:,1]
+        # probas = probas.round()
+
+        # gaussian_akurasi = round(100 * accuracy_score(test_label,probas))
+
+        #KNN
+        K=10
+        knn=KNeighborsClassifier(n_neighbors=K)
+        knn.fit(training,training_label)
+        knn_predict=knn.predict(test)
+
+        knn_akurasi = round(100 * accuracy_score(test_label,knn_predict))
+
+        #Decission Tree
+        dt = DecisionTreeClassifier()
+        dt.fit(training, training_label)
+        # prediction
+        dt_pred = dt.predict(test)
+        #Accuracy
+        dt_akurasi = round(100 * accuracy_score(test_label,dt_pred))
+
+        if submitted :
+            if naive :
+                st.write('Model Naive Bayes accuracy score: {0:0.2f}'. format(gaussian_akurasi))
+            if k_nn :
+                st.write("Model KNN accuracy score : {0:0.2f}" . format(knn_akurasi))
+            if destree :
+                st.write("Model Decision Tree accuracy score : {0:0.2f}" . format(dt_akurasi))
+        
+        grafik = st.form_submit_button("Grafik akurasi semua model")
+        if grafik:
+            data = pd.DataFrame({
+                'Akurasi' : [gaussian_akurasi, knn_akurasi, dt_akurasi],
+                'Model' : ['Gaussian Naive Bayes', 'K-NN', 'Decission Tree'],
+            })
+
+            chart = (
+                alt.Chart(data)
+                .mark_bar()
+                .encode(
+                    alt.X("Akurasi"),
+                    alt.Y("Model"),
+                    alt.Color("Akurasi"),
+                    alt.Tooltip(["Akurasi", "Model"]),
+                )
+                .interactive()
+            )
+            st.altair_chart(chart,use_container_width=True)
 with implementasi :
     st.write("Prepocessing dimulai dari : ") 
         
