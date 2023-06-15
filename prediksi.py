@@ -48,7 +48,104 @@ Dataset ini dapat digunakan untuk menganalisis pergerakan harga saham PT Bank Ra
 
 with Prepocessing : 
     st.write("Prepocessing dimulai dari : ")
-with modelling : 
-    st.write("Modelling terdapat 3 : ")
+with modeling:
+    training, test = train_test_split(scaled_features,test_size=0.2, random_state=1)#Nilai X training dan Nilai X testing
+    training_label, test_label = train_test_split(y, test_size=0.2, random_state=1)#Nilai Y training dan Nilai Y testing
+    with st.form("modeling"):
+        st.subheader('Modeling')
+        st.write("Pilihlah model yang akan dilakukan pengecekkan akurasi:")
+        naive = st.checkbox('Gaussian Naive Bayes')
+        k_nn = st.checkbox('K-Nearest Neighboor')
+        destree = st.checkbox('Decission Tree')
+        mlp = st.checkbox('Multi-Layer Perceptron')
+        submitted = st.form_submit_button("Submit")
+
+        # NB
+        GaussianNB(priors=None)
+
+        # Fitting Naive Bayes Classification to the Training set with linear kernel
+        gaussian = GaussianNB()
+        gaussian = gaussian.fit(training, training_label)
+
+        # Predicting the Test set results
+        y_pred = gaussian.predict(test)
+    
+        y_compare = np.vstack((test_label,y_pred)).T
+        gaussian.predict_proba(test)
+        gaussian_akurasi = round(100 * accuracy_score(test_label, y_pred))
+        # akurasi = 10
+
+        #KNN
+        K=10
+        knn=KNeighborsClassifier(n_neighbors=K)
+        knn.fit(training,training_label)
+        knn_predict=knn.predict(test)
+
+        knn_akurasi = round(100 * accuracy_score(test_label,knn_predict))
+
+        #Decission Tree
+        dt = DecisionTreeClassifier()
+        dt.fit(training, training_label)
+        # prediction
+        dt_pred = dt.predict(test)
+        #Accuracy
+        dt_akurasi = round(100 * accuracy_score(test_label,dt_pred))
+
+        # MLP
+        mlp = MLPClassifier(hidden_layer_sizes=(100, 100), max_iter=1000)
+        mlp.fit(training, training_label)
+        mlp_predict = mlp.predict(test)
+
+        mlp_akurasi = round(100 * accuracy_score(test_label, mlp_predict))
+
+        if submitted :
+            if naive :
+                st.write('Model Naive Bayes accuracy score: {0:0.2f}'. format(gaussian_akurasi))
+            if k_nn :
+                st.write("Model KNN accuracy score : {0:0.2f}" . format(knn_akurasi))
+            if destree :
+                st.write("Model Decision Tree accuracy score : {0:0.2f}" . format(dt_akurasi))
+            if mlp :
+                st.write("Model MLP accuracy score : {0:0.2f}" . format(mlp_akurasi))
 with implementasi : 
-    st.write("Prediksi Saham Terkini dengan memasukkkan input ft ")
+   with st.form("my_form"):
+        st.subheader("Implementasi")
+        Open = st.number_input('Masukkan Harga pembukaan : ')
+        High = st.number_input('Masukkan Harga tertinggi : ')
+        Low = st.number_input('Masukkan Harga terendah : ')
+        Close = st.number_input('Masukkan Harga penutupan : ')
+        Adj_Close = st.number_input('Masukkan Harga penutupan saham yang telah disesuaikan : ')
+        Volume = st.number_input('Masukkan Jumlah saham yang diperdagangkan : ')
+        model = st.selectbox('Pilihlah model yang akan anda gunakan untuk melakukan prediksi?',
+                ('Gaussian Naive Bayes', 'K-NN', 'Decision Tree', 'Multi-Layer Perceptron'))
+
+        prediksi = st.form_submit_button("Submit")
+        if prediksi:
+            inputs = np.array([
+                Open,
+                High,
+                Low,
+                Close,
+                Adj_Close,
+                Volume,
+            ])
+
+            df_min = X.min()
+            df_max = X.max()
+            input_norm = ((inputs - df_min) / (df_max - df_min))
+            input_norm = np.array(input_norm).reshape(1, -1)
+
+            if model == 'Gaussian Naive Bayes':
+                mod = gaussian
+            if model == 'K-NN':
+                mod = knn  
+            if model == 'Decision Tree':
+                mod = dt
+            if model == 'Multi-Layer Perceptron':
+                mod = mlp
+
+            input_pred = mod.predict(input_norm)
+
+
+            st.subheader('Hasil Prediksi')
+            st.write('Menggunakan Pemodelan :', model)
