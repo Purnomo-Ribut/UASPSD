@@ -140,37 +140,37 @@ with modelling :
 			st.write("Anda Belum Memilih Metode")
 with implementasi :
 	def submit3():
-      inputs = np.array([[saham3, saham2, saham1]])
-      st.write("Data Input :",inputs)
-      scaler = MinMaxScaler()
-      train = scaler.fit_transform(data_Train)
-      x = scaler.transform(inputs.reshape(-1,1))
-      st.write("Data Normalisasi",x)
-      test=x.reshape(1,3)
-      st.write(test)
+		inputs = np.array([[saham3, saham2, saham1]])
+		st.write("Data Input :",inputs)
+		scaler = MinMaxScaler()
+		train = scaler.fit_transform(data_Train)
+		x = scaler.transform(inputs.reshape(-1,1))
+		st.write("Data Normalisasi",x)
+		test=x.reshape(1,3)
+		st.write(test)
 
-      # create output
-      if met1:
-         y_pred1 = model1.predict(test)
-         x=scaler.inverse_transform(y_pred1.reshape(-1,1))
-      # st.success(f"Suhu ruang diprediksi sebesar : {x[0][0]}")
-         st.title("k-nearest neighbors")
-         st.success(f"Saham Diprediksi Sebesar : {x[0][0]}")
-         
-      elif met2:
-         y_pred2 = model2.predict(test)
-         x=scaler.inverse_transform(y_pred2.reshape(-1,1))
-         st.title("Support Vector Machine")
-         st.success(f"Saham Diprediksi Sebesar : {x[0][0]}")
+		# create output
+		if met1:
+			y_pred1 = model1.predict(test)
+			x=scaler.inverse_transform(y_pred1.reshape(-1,1))
+		# st.success(f"Suhu ruang diprediksi sebesar : {x[0][0]}")
+			st.title("k-nearest neighbors")
+			st.success(f"Saham Diprediksi Sebesar : {x[0][0]}")
+			
+		elif met2:
+			y_pred2 = model2.predict(test)
+			x=scaler.inverse_transform(y_pred2.reshape(-1,1))
+			st.title("Support Vector Machine")
+			st.success(f"Saham Diprediksi Sebesar : {x[0][0]}")
 
-      elif met3:
-         y_pred3 = model3.predict(test)
-         x=scaler.inverse_transform(y_pred3.reshape(-1,1))
-         st.title("Decision Tree")
-         st.success(f"Saham Diprediksi Sebesar : {x[0][0]}")
+		elif met3:
+			y_pred3 = model3.predict(test)
+			x=scaler.inverse_transform(y_pred3.reshape(-1,1))
+			st.title("Decision Tree")
+			st.success(f"Saham Diprediksi Sebesar : {x[0][0]}")
 
-      else :
-         st.write("Metode yang Anda Pilih Belum Ada, Silahkan Kembali ke Tabs Modelling Untuk memilih Metode")
+		else :
+			st.write("Metode yang Anda Pilih Belum Ada, Silahkan Kembali ke Tabs Modelling Untuk memilih Metode")
 
 	st.title("Prediksi Saham PT. Bank Mandiri")
 	# saham1 = st.input("Harga Saham 1 Bulan Sebelumnya")
