@@ -27,7 +27,7 @@ st.write ("""
 data, Prepocessing, modelling, implementasi = st.tabs(["Dataset","Prepocessing Data" ,"Modelling", "Implementasi"])
 
 with data:
-    st.write("Tampilan Dataset")
+    st.write("Tampilan Dataset Saham PT Bank Rakyat Indonesia Persero")
     st.dataframe(load_dataset())
     st.write("""
     Dataset Saham PT Bank Rakyat Indonesia Persero yang diambil dari finance.yahoo.com berisi informasi harga saham pada setiap tanggal perdagangan. 
