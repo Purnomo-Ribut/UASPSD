@@ -10,7 +10,7 @@ from sklearn.metrics import mean_absolute_error
 from sklearn.model_selection import train_test_split
 
 st.title('Tugas UAS Proyek Sains Data B ')
-st.text("Purnomo Ribut 200411100107")
+st.text("Purnomo Ribut 200411100156")
 st.text("Dhafa Febriyan Wiranata  200411100169")
 data, preprocessing, modelling, implementasi = st.tabs(["Data","Preprocessing" ,"Modelling", "Implementasi"])
 
