@@ -51,6 +51,49 @@ with Prepocessing :
     df = pd.read_csv("BBNI.JK.csv")
     df
 
+    def split_sequence(sequence, n_steps):
+    # Inisialisasi list kosong untuk menyimpan input (X) dan output (y)
+        X, y = list(), list()
+        for i in range(len(sequence)):
+            # Menemukan akhir pola ini berdasarkan jumlah langkah (n_steps)
+            end_ix = i + n_steps
+            # Memeriksa apakah kita sudah melebihi urutan
+            if end_ix > len(sequence)-1:
+                break
+            # Mengumpulkan bagian input dan output dari pola
+            seq_x, seq_y = sequence[i:end_ix], sequence[end_ix]
+            X.append(seq_x)
+            y.append(seq_y)
+
+    # Mengembalikan X dan y dalam bentuk array NumPy
+        return array(X), array(y)
+    n = len(df)
+    # Menghitung jumlah total data dalam dataset
+    # dan menyimpannya dalam variabel n
+
+    sizeTrain = (round(n*0.8))
+    # Menghitung jumlah data yang akan digunakan untuk data latih
+    # dengan mengalikan 0.8 (80%) dengan total jumlah data
+    # dan membulatkannya ke bilangan terdekat menggunakan fungsi round()
+    # dan menyimpan hasilnya dalam variabel sizeTrain
+
+    data_train = pd.DataFrame(df[:sizeTrain])
+    # Membuat DataFrame baru untuk data latih
+    # dengan menggunakan slicing untuk mengambil data dari indeks 0 sampai sizeTrain
+    # dan menyimpannya dalam variabel data_train
+
+    data_test = pd.DataFrame(df[sizeTrain:])
+    # Membuat DataFrame baru untuk data uji
+    # dengan menggunakan slicing untuk mengambil data mulai dari indeks sizeTrain hingga akhir
+    # dan menyimpannya dalam variabel data_test
+
+    # dates_test = pd.DataFrame(dates[sizeTrain:])
+    # Komentar ini memberikan penjelasan bahwa ada variabel dates yang tidak digunakan di sini
+
+    data_train
+    # Menampilkan DataFrame data_train
+
+
 with modelling :
     st.write("Prepocessing dimulai dari : ") 
 with implementasi :
